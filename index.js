@@ -1,7 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { Client } from 'pg';
+import { initDB } from './db/db.js';
+import usersRouter from './routes/usersRoutes.js';
+import authRouter from './routes/authRoutes.js';
 
 dotenv.config();
 
@@ -16,17 +18,14 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.send('API is runnassing');
 });
-
-// Define your PostgreSQL connection configuration
-// const client = new Client({
-//   user: process.env.DB_USER,
-//   host: process.env.DB_HOST,
-//   database: process.env.DB_NAME,
-//   password: process.env.DB_PASS,
-//   port: process.env.DB_PORT,
-// });
+app.use(usersRouter);
+app.use(authRouter);
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+initDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}).catch(err =>
+  console.log(err)
+)
