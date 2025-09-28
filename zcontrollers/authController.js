@@ -5,9 +5,9 @@ import jwt from 'jsonwebtoken';
 const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-key'; // Use env variable in production
 
 // Generate JWT token
-const generateToken = (userId, email) => {
+const generateToken = (userId, email, role) => {
     return jwt.sign(
-        { userId, email },
+        { userId, email, role },
         JWT_SECRET,
         { expiresIn: process.env.JWT_EXPIRES_IN }
     );
@@ -33,7 +33,7 @@ export const registerUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = await createUser(userName, email, hashedPassword);
 
-        const token = generateToken(newUser.id, newUser.email);
+        const token = generateToken(newUser.id, newUser.email, newUser.role);
         res.status(200).json({
             message: 'User created successfully',
             token,
@@ -59,7 +59,7 @@ export const loginUser = async (req, res) => {
             return res.status(401).json({ message: 'nopt good password' });
         }
 
-        const token = generateToken(user.id, user.email);
+        const token = generateToken(user.id, user.email, user.role);
         res.status(200).json({
             message: 'Login successful',
             token,

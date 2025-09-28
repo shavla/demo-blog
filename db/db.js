@@ -23,6 +23,17 @@ export async function initDB() {
       );
     `);
 
+        await pool.query(`
+     CREATE TABLE IF NOT EXISTS blogs (
+                blog_id SERIAL PRIMARY KEY,
+                user_id INTEGER NOT NULL,
+                create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                title VARCHAR(255) NOT NULL,
+                text TEXT NOT NULL,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            )
+    `)
+
         console.log("✅ All tables initialized successfully");
     } catch (err) {
         console.error("❌ Error initializing database:", err);

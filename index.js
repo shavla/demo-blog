@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { initDB } from './db/db.js';
 import usersRouter from './routes/usersRoutes.js';
 import authRouter from './routes/authRoutes.js';
+import blogRouter from './routes/blogRoutes.js';
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.get('/', (req, res) => {
 });
 app.use(usersRouter);
 app.use(authRouter);
+app.use(blogRouter);
 
 // Start server
 initDB().then(() => {
