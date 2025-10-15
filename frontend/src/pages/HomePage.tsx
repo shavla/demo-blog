@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../customHooks/AuthHook";
 
 const HomePage = () => {
     const navigate = useNavigate();
 
     const [users, setUser] = useState<any>(null);
+
+    const { logout } = useAuth();
 
     const handleClick = async () => {
         try {
@@ -18,11 +21,11 @@ const HomePage = () => {
     }
 
     const handleLogOut = async () => {
-        localStorage.removeItem('token');
+       logout();
     }
 
     const handleLogIn = () => {
-        navigate("/login")
+        navigate("/login");
     }
 
     return (<>

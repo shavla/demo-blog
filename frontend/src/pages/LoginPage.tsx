@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../customHooks/AuthHook";
 
 const LoginPage = () => {
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const [userInfo, setUserInfo] = useState({
         email: "",
@@ -32,8 +34,9 @@ const LoginPage = () => {
                 const data = await response.json();
                 console.log('Registration successful:', data);
 
-                localStorage.setItem('token', data.token);
                 setUserInfo({ email: "", password: "" });
+                login(data.user, data.token);
+                // localStorage.setItem('token', data.token);
                 navigate("/");
             } else {
                 const errorData = await response.json();
