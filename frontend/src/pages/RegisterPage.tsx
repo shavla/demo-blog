@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../utils/consts";
 
 const RegisterPage = () => {
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ const RegisterPage = () => {
         console.log(userInfo)
 
         try {
-            const response = await fetch('http://localhost:5000/register', {
+            const response = await fetch(BASE_URL + '/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

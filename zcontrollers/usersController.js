@@ -5,7 +5,7 @@ export const getAllUsers = async (req, res) => {
         const result = await pool.query(
             `SELECT * FROM users`
         );
-        console.log(result.rows);
+        // console.log(result.rows);
         res.status(200).json(result.rows)
 
     } catch (error) {

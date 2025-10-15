@@ -1,17 +1,20 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../customHooks/AuthHook";
+import { BASE_URL } from "../utils/consts";
 
 const HomePage = () => {
     const navigate = useNavigate();
 
     const [users, setUser] = useState<any>(null);
 
-    const { logout } = useAuth();
+    const { logout, token } = useAuth();
 
     const handleClick = async () => {
         try {
-            const response = await fetch('http://localhost:5000/users');
+            const response = await fetch(BASE_URL + '/users', {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             const data = await response.json();
             console.log('User inserted:', data);
             setUser(data);
@@ -21,7 +24,7 @@ const HomePage = () => {
     }
 
     const handleLogOut = async () => {
-       logout();
+        logout();
     }
 
     const handleLogIn = () => {

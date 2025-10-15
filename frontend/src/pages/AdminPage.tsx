@@ -1,29 +1,32 @@
 import { useEffect, useState } from "react";
+import { BASE_URL } from "../utils/consts";
+import { useAuth } from "../customHooks/AuthHook";
 
 const AdminPage = () => {
     const [users, setUser] = useState<UserType[] | null>(null);
     const [loading, setLoading] = useState(true); // optional loading state
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const response = await fetch('http://localhost:5000/users');
-                if (!response.ok) throw new Error('Failed to fetch user');
-                const data: UserType[] = await response.json();
-                console.log(data)
-                setUser(data);
-            } catch (err: any) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+    const { token } = useAuth();
 
-        fetchUser();
-    }, []);
+    const handleClick = async () => {
+        try {
+            const response = await fetch(BASE_URL + '/users', {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            if (!response.ok) throw new Error('Failed to fetch user');
+            const data: UserType[] = await response.json();
+            console.log(data)
+            setUser(data);
+        } catch (err: any) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     return (<>
+        <button className="btn btn-neutral" onClick={handleClick}>Neutral</button>
         {loading && <h1>loading....</h1>}
         {error && <h1>error: {error}</h1>}
         {users && (

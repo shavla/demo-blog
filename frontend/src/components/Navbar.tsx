@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Bell, Search, SquarePen } from "lucide-react";
 
 const Navbar = () => {
-    const { user, token, isAuthenticated } = useAuth();
+    const { user, isAuthenticated } = useAuth();
 
     return (<>
         {isAuthenticated ? (

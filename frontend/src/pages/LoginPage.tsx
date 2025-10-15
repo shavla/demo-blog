@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../customHooks/AuthHook";
+import { BASE_URL } from "../utils/consts";
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ const LoginPage = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:5000/login', {
+            const response = await fetch(BASE_URL + '/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

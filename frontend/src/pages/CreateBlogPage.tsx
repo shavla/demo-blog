@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../customHooks/AuthHook';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../utils/consts';
 
 const CreateBlogPage: React.FC = () => {
     const navigate = useNavigate();
@@ -24,7 +25,7 @@ const CreateBlogPage: React.FC = () => {
         setIsSubmitting(true);
 
         try {
-            const response = await fetch('http://localhost:5000/createblog', {
+            const response = await fetch(BASE_URL + '/createblog', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
