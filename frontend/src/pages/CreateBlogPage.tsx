@@ -76,27 +76,6 @@ const CreateBlogPage: React.FC = () => {
                             placeholder="Enter blog title"
                         />
                     </div>
-                    {/* 
-          <div>
-            <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
-              Category
-            </label>
-            <select
-              id="category"
-              name="category"
-              value={blogData.category}
-              onChange={handleInputChange}
-              required
-              className="select select-bordered w-full"
-            >
-              <option value="">Select a category</option>
-              <option value="technology">Technology</option>
-              <option value="lifestyle">Lifestyle</option>
-              <option value="travel">Travel</option>
-              <option value="food">Food</option>
-            </select>
-          </div> */}
-
                     <div>
                         <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
                             Content

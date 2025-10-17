@@ -13,6 +13,7 @@ import AdminRoute from './components/AdminRoute';
 import Navbar from './components/Navbar';
 import { AuthProvider } from './customHooks/AuthHook';
 import AboutPage from './pages/AboutPage';
+import EditBlog from './pages/EditBlog';
 
 function App() {
   return (
@@ -34,7 +35,7 @@ function App() {
             }
           />
           <Route
-            path="/userInfo"
+            path="/userPage"
             element={
               <ProtectedRoute>
                 <UserPage />
@@ -55,6 +56,14 @@ function App() {
               <AdminRoute>
                 <AdminPage />
               </AdminRoute>
+            }
+          />
+            <Route
+            path="/editBlog/:id"
+            element={
+              <ProtectedRoute>
+                <EditBlog />
+              </ProtectedRoute>
             }
           />
           <Route path="/about" element={<AboutPage />} />
