@@ -1,6 +1,6 @@
 import { pool } from "../db/db.js";
 
-export const createBlogItem = async ({ userId, title, content }) => {
+export const createBlog = async ({ userId, title, content }) => {
     try {
         const query = `
             INSERT INTO blogs (user_id, title, text) 
@@ -16,7 +16,7 @@ export const createBlogItem = async ({ userId, title, content }) => {
     }
 };
 
-export const getBlogs = async () => {
+export const getAllBlogs = async () => {
     try {
         const query = `
         SELECT 

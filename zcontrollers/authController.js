@@ -13,15 +13,6 @@ const generateToken = (userId, email, role) => {
     );
 };
 
-// Verify JWT token
-const verifyToken = (token) => {
-    try {
-        return jwt.verify(token, JWT_SECRET);
-    } catch (error) {
-        return null;
-    }
-};
-
 export const registerUser = async (req, res) => {
     try {
         const { userName, email, password } = req.body;
@@ -60,10 +51,12 @@ export const loginUser = async (req, res) => {
         }
 
         const token = generateToken(user.id, user.email, user.role);
+        const { password: _, ...safeUser } = user;
+
         res.status(200).json({
             message: 'Login successful',
             token,
-            user
+            user: safeUser
         });
     } catch (error) {
         console.error('Login error:', error);

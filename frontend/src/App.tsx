@@ -26,6 +26,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/blogDetail/:id" element={<BlogDetailPage />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route
             path="/createblog"
             element={
@@ -58,7 +59,7 @@ function App() {
               </AdminRoute>
             }
           />
-            <Route
+          <Route
             path="/editBlog/:id"
             element={
               <ProtectedRoute>
@@ -66,7 +67,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/about" element={<AboutPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AuthProvider>

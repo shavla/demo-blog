@@ -1,11 +1,11 @@
-import { createBlogItem, getBlogs, getBlog, deleteBlog, updateBlog } from '../models/blogsModel.js';
+import { getBlog, deleteBlog, updateBlog, createBlog, getAllBlogs } from '../models/blogsModel.js';
 
-export const createBlog = async (req, res) => {
+export const createBlogController = async (req, res) => {
     try {
         const { title, content } = req.body;
         const userId = req.user.userId;
 
-        const newBlog = await createBlogItem({ userId, title, content });
+        const newBlog = await createBlog({ userId, title, content });
         res.status(201).json({
             message: 'Blog created successfully',
             blog: newBlog
@@ -16,9 +16,9 @@ export const createBlog = async (req, res) => {
     }
 }
 
-export const getAllBlogs = async (req, res) => {
+export const getAllBlogsController = async (req, res) => {
     try {
-        const blogs = await getBlogs();
+        const blogs = await getAllBlogs();
         res.status(200).json(blogs);
     } catch (error) {
         console.error('Error fetching blogs:', error);
@@ -26,7 +26,7 @@ export const getAllBlogs = async (req, res) => {
     }
 }
 
-export const getBlogInfo = async (req, res) => {
+export const getBlogController = async (req, res) => {
     const { id } = req.params;
     try {
         const blog = await getBlog(id);
@@ -37,9 +37,9 @@ export const getBlogInfo = async (req, res) => {
     }
 }
 
-export const deleteBlogItem = async (req, res) => {
+export const deleteBlogController = async (req, res) => {
     const { id } = req.params;
-    const userId = req.user.userId;      // From verifyToken middleware
+    const userId = req.user.userId;    
     const userRole = req.user.role;
 
     try {
@@ -61,12 +61,10 @@ export const deleteBlogItem = async (req, res) => {
     }
 }
 
-export const changeBlogDetails = async (req, res) => {
+export const updateBlogController = async (req, res) => {
     const { id } = req.params;
-    const userId = req.user.userId;      // From verifyToken middleware
+    const userId = req.user.userId;    
     const { title, text } = req.body;
-
-    console.log(id, userId, text, title)
 
     try {
         const blog = await getBlog(id);
