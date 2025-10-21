@@ -25,7 +25,7 @@ const Navbar = () => {
                 </div>
             </div>
         ) : (
-            <div className="flex justify-evenly items-center h-16 border-b border-black bg-[#F7F4ED]">
+            <div className="flex justify-evenly items-center h-16 border-b border-black bg-primary">
                 <div className="logo w-32"><img src={logo} alt="Logo" /></div>
                 <div className="flex items-center gap-4">
                     <Link to={"/about"}>Our story</Link>

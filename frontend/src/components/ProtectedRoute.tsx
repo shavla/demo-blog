@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { getToken, isTokenValid } from '../utils/auth';
+import { isTokenValid } from '../utils/auth';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
