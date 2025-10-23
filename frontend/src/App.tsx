@@ -10,7 +10,7 @@ import PersonInfoPage from './pages/PersonInfoPage';
 import AdminPage from './pages/AdminPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
-import Navbar from './components/Navbar';
+import Navbar from './components/navbar/Navbar';
 import { AuthProvider } from './customHooks/AuthHook';
 import AboutPage from './pages/AboutPage';
 import EditBlog from './pages/EditBlog';
