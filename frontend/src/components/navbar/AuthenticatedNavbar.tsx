@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const AuthenticatedNavbar = ({ username }: { username?: string }) => {
     return (
-        <div className="h-12 flex items-center justify-around">
+        <nav className="h-14 flex items-center justify-around">
             <div className="flex">
                 <Logo></Logo>
                 <div className="flex ml-3">
@@ -17,7 +17,7 @@ const AuthenticatedNavbar = ({ username }: { username?: string }) => {
                 <Link to={"/createBlog"}><Bell></Bell></Link>
                 <Link to={"/userPage"}>{username}</Link>
             </div>
-        </div>
+        </nav>
     );
 }
 

@@ -3,7 +3,7 @@ import Logo from "./Logo";
 
 const UnauthenticatedNavbar = () => {
     return (
-        <nav className="flex justify-evenly items-center h-16 border-b border-black bg-primary">
+        <nav className="flex justify-evenly items-center h-20 border-b border-black bg-primary">
             <Logo></Logo>
             <div className="flex items-center gap-4">
                 <Link to={"/about"}>Our story</Link>

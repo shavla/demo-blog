@@ -6,7 +6,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        "primary": "#F7F4ED"
+        "primary": "#F7F4ED",
+        navbar: {
+          "secondary": "#242424"
+        }
       }
     },
   },

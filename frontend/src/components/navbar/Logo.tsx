@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 
-const Logo = () => {
+const Logo = ({ size }: { size?: number }) => {
     return (
-        <div className="logo w-36">
+        <div className="logo" style={{ width: size ? `${size * 0.25}rem` : '9rem' }}>
             <Link to={"/"}>
-                <img src={logo} alt="Logo" />
+                <img src={logo} alt="logo" />
             </Link>
         </div>
     );

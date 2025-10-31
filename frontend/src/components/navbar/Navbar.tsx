@@ -2,18 +2,23 @@ import { useAuth } from "../../customHooks/AuthHook";
 import { useLocation } from "react-router-dom";
 import UnauthenticatedNavbar from "./UnauthenticatedNavbar";
 import AuthenticatedNavbar from "./AuthenticatedNavbar";
+import AboutNavbar from "./AboutNavbar";
 
 const Navbar = () => {
     const location = useLocation();
-    const { user, isAuthenticated, loading } = useAuth();
-    const hiddenRoutes = ['/about'];
-    const isHidden = hiddenRoutes.includes(location.pathname);
+    const { user, isAuthenticated } = useAuth();
+    const aboutRoutes = ["/about"];
+    const isAboutPage = aboutRoutes.includes(location.pathname);
 
-    return (<>
-        {isAuthenticated ? (
-            <AuthenticatedNavbar username={user?.username} ></AuthenticatedNavbar>
-        ) : <UnauthenticatedNavbar></UnauthenticatedNavbar>}
-    </>);
+    if (isAboutPage) {
+        return <AboutNavbar  username={user?.username}/>;
+    }
+
+    if (isAuthenticated) {
+        return <AuthenticatedNavbar username={user?.username} />;
+    }
+
+    return <UnauthenticatedNavbar />;
 }
 
 export default Navbar;
