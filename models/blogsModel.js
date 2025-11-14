@@ -50,10 +50,10 @@ export const getBlog = async (id) => {
             users.email
         FROM blogs
         JOIN users ON blogs.user_id = users.id
-         WHERE blogs.blog_id=${id}
+        WHERE blogs.blog_id = $1
         `;
 
-        const result = await pool.query(query);
+        const result = await pool.query(query, [id]);
         return result.rows[0];
     } catch (error) {
         console.error('Error getting blog:', error);
@@ -64,10 +64,10 @@ export const getBlog = async (id) => {
 export const deleteBlog = async (id) => {
     try {
         const query = `
-         DELETE FROM blogs WHERE blog_id = ${id}
+         DELETE FROM blogs WHERE blog_id = $1
         `;
 
-        const result = await pool.query(query);
+        const result = await pool.query(query, [id]);
         return result.rows[0];
     } catch (error) {
         console.error('Error deleting blog:', error);
@@ -78,16 +78,15 @@ export const deleteBlog = async (id) => {
 export const updateBlog = async (id, text, title) => {
     console.log("here")
 
-     try {
+    try {
         const query = `
-         UPDATE blogs SET title = '${title}', text = '${text}' WHERE blog_id = ${id}
+         UPDATE blogs SET title = $1, text = $2 WHERE blog_id = $3
         `;
 
-        const result = await pool.query(query);
+        const result = await pool.query(query, [title, text, id]);
         return result.rows[0];
     } catch (error) {
-        console.error('Error deleting blog:', error);
+        console.error('Error updating blog:', error);
         throw error;
     }
-
 }

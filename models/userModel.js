@@ -7,6 +7,23 @@ export const getAllUsers = async () => {
     return result.rows;
   } catch (error) {
     console.error('Error getting all users:', error);
-    throw error; 
+    throw error;
   }
 };
+
+export const getProfileInfo = async (id) => {
+  try {
+    const userRes = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+    const blogsRes = await pool.query('SELECT * FROM blogs WHERE user_id = $1', [id]);
+
+    const user = userRes.rows[0];
+    user.blogs = blogsRes.rows;
+    const { password: _, ...safeUser } = user;
+
+    return safeUser;
+  } catch (error) {
+    console.error('Error getting all users:', error);
+    throw error;
+  }
+};
+
