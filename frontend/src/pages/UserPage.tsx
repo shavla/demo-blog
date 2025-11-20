@@ -36,6 +36,7 @@ const UserPage = () => {
 
     const blogs = data?.blogs || [];
     console.log(data)
+    
     return (
         <div className="flex flex-col items-center">
             <div className="user-info my-5">

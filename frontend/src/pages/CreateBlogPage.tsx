@@ -1,55 +1,40 @@
-import React, { useState } from 'react';
-import { useAuth } from '../customHooks/AuthHook';
-import { useNavigate } from 'react-router-dom';
-import { BASE_URL } from '../utils/consts';
+import React, { useState } from "react";
+import { useAuth } from "../customHooks/AuthHook";
+import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createBlog } from "../api/userApi";
 
 const CreateBlogPage: React.FC = () => {
     const navigate = useNavigate();
     const { user, token } = useAuth();
-    const [blogData, setBlogData] = useState({
-        title: '',
-        content: '',
-    });
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const queryClient = useQueryClient();
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const [blogData, setBlogData] = useState({ title: "", content: "" });
+
+    const createBlogMutation = useMutation({
+        mutationFn: (data: { title: string; content: string }) =>
+            createBlog(token!, data),
+        onSuccess: (data) => {
+            queryClient.invalidateQueries({ queryKey: ["profile", token] });
+            setBlogData({ title: "", content: "" });
+            navigate("/userPage");
+        },
+        onError: (error: any) => {
+            console.error("Failed to create blog:", error.message);
+            alert(`Failed to create blog: ${error.message}`);
+        },
+    });
+
+    const handleInputChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
         const { name, value } = e.target;
-        setBlogData(prev => ({
-            ...prev,
-            [name]: value
-        }));
+        setBlogData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        setIsSubmitting(true);
-
-        try {
-            const response = await fetch(BASE_URL + '/createblog', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(blogData)
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                console.log('Blog created:', result);
-                setBlogData({ title: '', content: '' });
-                navigate("/userinfo")
-                // alert('Blog created successfully!');
-            } else {
-                const error = await response.json();
-                console.log(error.message || 'Failed to create blog');
-            }
-        } catch (error) {
-            console.error('Error creating blog:', error);
-            //   alert('Network error. Please try again.');
-        } finally {
-            setIsSubmitting(false);
-        }
+        createBlogMutation.mutate(blogData);
     };
 
     return (
@@ -57,17 +42,16 @@ const CreateBlogPage: React.FC = () => {
             <div className="max-w-2xl mx-auto">
                 <h1 className="text-3xl font-bold mb-6">Create New Blog Post</h1>
                 <p className="text-gray-600 mb-8">
-                    Welcome, {user?.username}! Let's start writing new story!
+                    Welcome, {user?.username}! Let's start writing a new story!
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
                             Blog Title
                         </label>
                         <input
                             type="text"
-                            id="title"
                             name="title"
                             value={blogData.title}
                             onChange={handleInputChange}
@@ -76,12 +60,12 @@ const CreateBlogPage: React.FC = () => {
                             placeholder="Enter blog title"
                         />
                     </div>
+
                     <div>
-                        <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
                             Content
                         </label>
                         <textarea
-                            id="content"
                             name="content"
                             value={blogData.content}
                             onChange={handleInputChange}
@@ -94,10 +78,12 @@ const CreateBlogPage: React.FC = () => {
 
                     <button
                         type="submit"
-                        disabled={isSubmitting}
+                        disabled={createBlogMutation.isPending}
                         className="btn btn-primary w-full"
                     >
-                        {isSubmitting ? 'Creating...' : 'Create Blog Post'}
+                        {createBlogMutation.isPending
+                            ? "Creating..."
+                            : "Create Blog Post"}
                     </button>
                 </form>
             </div>
