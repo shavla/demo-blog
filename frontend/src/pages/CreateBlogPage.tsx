@@ -57,7 +57,7 @@ const CreateBlogPage: React.FC = () => {
             <div className="max-w-2xl mx-auto">
                 <h1 className="text-3xl font-bold mb-6">Create New Blog Post</h1>
                 <p className="text-gray-600 mb-8">
-                    Welcome, {user?.username}! This is a protected page - you needed to log in to access it.
+                    Welcome, {user?.username}! Let's start writing new story!
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-6">

@@ -76,11 +76,9 @@ export const deleteBlog = async (id) => {
 }
 
 export const updateBlog = async (id, text, title) => {
-    console.log("here")
-
     try {
         const query = `
-         UPDATE blogs SET title = $1, text = $2 WHERE blog_id = $3
+         UPDATE blogs SET title = $1, text = $2, update_date = NOW() WHERE blog_id = $3
         `;
 
         const result = await pool.query(query, [title, text, id]);
