@@ -36,14 +36,14 @@ const UserPage = () => {
 
     const blogs = data?.blogs || [];
     console.log(data)
-    
+
     return (
         <div className="flex flex-col items-center">
             <div className="user-info my-5">
                 <h1 className="text-4xl font-bold">{user?.username}</h1>
             </div>
 
-            <div className="blogs max-w-xl p-7 flex flex-col items-center gap-8">
+            <div className="blogs max-w-xl w-3/4 p-7 flex flex-col items-center gap-8">
                 {blogs.length === 0 ? (
                     <p>No blogs yet</p>
                 ) : (
