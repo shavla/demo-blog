@@ -1,12 +1,13 @@
 import { BASE_URL } from "../utils/consts";
 
-export const fetchUserProfile = async (token: string) => {
-  const res = await fetch(`${BASE_URL}/profile`, {
+export const fetchUserInfo = async (token:string, id: number) => {
+  const res = await fetch(`${BASE_URL}/user/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   if (!res.ok) throw new Error(`Failed to fetch profile (${res.status})`);
   return res.json();
 };
+
 
 export const createBlog = async (token: string, blogData: { title: string; content: string }) => {
   const response = await fetch(`${BASE_URL}/createblog`, {
@@ -28,7 +29,6 @@ export const createBlog = async (token: string, blogData: { title: string; conte
 
 
 export const getBlog = async (blogId: number, token: string) => {
-  console.log("startt")
   const response = await fetch(`${BASE_URL}/blog/${blogId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });

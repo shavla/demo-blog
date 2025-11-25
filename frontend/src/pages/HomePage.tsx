@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../customHooks/AuthHook";
 import { BASE_URL } from "../utils/consts";
 
@@ -57,9 +57,6 @@ const HomePage = () => {
     }
 
     return (<>
-        <Link to={"/userInfo"}>user</Link>
-        <Link to={"/createBlog"}>create blog</Link>
-
         <button onClick={handleLogOut} className="btn btn-primary">Log out</button>
         <button onClick={handleLogIn} className="btn btn-primary">Log in</button>
 

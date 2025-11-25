@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../customHooks/AuthHook";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getBlog, deleteBlog } from "../api/userApi";
@@ -79,7 +79,7 @@ const BlogDetailPage = () => {
         <>
             <div className="container mx-auto p-8 max-w-5xl">
                 <h1 className="text-4xl font-bold mb-4">{blog.title}</h1>
-                <p className="text-gray-600 mb-2">Author: {blog.username}</p>
+                <p className="text-gray-600 mb-2">Author: <Link to={`/personInfo/${blog.user_id}`}> {blog.username} </Link></p>
                 <p className="text-gray-500 mb-6">
                     Created: {formatDateShort(blog.create_date)}
                 </p>

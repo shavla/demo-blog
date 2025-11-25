@@ -5,7 +5,6 @@ import CreateBlogPage from './pages/CreateBlogPage';
 import NotFoundPage from './pages/NotFoundPage';
 import BlogDetailPage from './pages/BlogDetailPage';
 import RegisterPage from './pages/RegisterPage';
-import UserPage from './pages/UserPage';
 import PersonInfoPage from './pages/PersonInfoPage';
 import AdminPage from './pages/AdminPage';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -32,14 +31,6 @@ function App() {
             element={
               <ProtectedRoute>
                 <CreateBlogPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/userPage"
-            element={
-              <ProtectedRoute>
-                <UserPage />
               </ProtectedRoute>
             }
           />

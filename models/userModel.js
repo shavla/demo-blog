@@ -11,7 +11,7 @@ export const getAllUsers = async () => {
   }
 };
 
-export const getProfileInfo = async (id) => {
+export const getUserInfo = async (id) => {
   try {
     const userRes = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
     const blogsRes = await pool.query('SELECT * FROM blogs WHERE user_id = $1 ORDER BY update_date DESC', [id]);

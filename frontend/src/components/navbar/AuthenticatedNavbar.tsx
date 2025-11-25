@@ -2,7 +2,7 @@ import { Search, SquarePen } from "lucide-react";
 import Logo from "./Logo";
 import { Link } from "react-router-dom";
 
-const AuthenticatedNavbar = ({ username }: { username?: string }) => {
+const AuthenticatedNavbar = ({ username, userId }: { username?: string, userId?:number }) => {
     return (
         <nav className="h-14 flex items-center justify-around">
             <div className="flex">
@@ -14,7 +14,7 @@ const AuthenticatedNavbar = ({ username }: { username?: string }) => {
             </div>
             <div className="flex gap-4 text-[#6B6B6B]">
                 <Link to={"/createBlog"} className="flex"><SquarePen className="mr-2"></SquarePen> Write</Link>
-                <Link to={"/userPage"}>{username}</Link>
+                <Link to={`/personInfo/${userId}`}>{username}</Link>
             </div>
         </nav>
     );

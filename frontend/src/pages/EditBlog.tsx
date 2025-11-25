@@ -21,8 +21,8 @@ const EditBlog = () => {
 
     useEffect(() => {
         if (blog) {
-            setTitle(blog.title);
-            setText(blog.text);
+            setTitle(blog.title ?? "");
+            setText(blog.text ?? "");
         }
     }, [blog]);
 
@@ -40,7 +40,7 @@ const EditBlog = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        updateMutation.mutate({  title, text });
+        updateMutation.mutate({ title, text });
     };
 
     if (isLoading) return <p>Loading blog...</p>;

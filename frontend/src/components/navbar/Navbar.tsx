@@ -15,7 +15,7 @@ const Navbar = () => {
     }
 
     if (isAuthenticated) {
-        return <AuthenticatedNavbar username={user?.username} />;
+        return <AuthenticatedNavbar username={user?.username} userId={user?.id}/>;
     }
 
     return <UnauthenticatedNavbar />;

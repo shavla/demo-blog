@@ -17,7 +17,7 @@ const CreateBlogPage: React.FC = () => {
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["profile", token] });
             setBlogData({ title: "", content: "" });
-            navigate("/userPage");
+            navigate(`/personInfo/${user?.id}`);
         },
         onError: (error: any) => {
             console.error("Failed to create blog:", error.message);

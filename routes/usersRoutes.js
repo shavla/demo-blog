@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllUsersController, getProfileInfoController } from "../zcontrollers/usersController.js";
+import { getAllUsersController, getUserInfoController } from "../zcontrollers/usersController.js";
 import { isAdmin } from "../middleware/isAdminMiddleware.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
 
@@ -7,6 +7,6 @@ const usersRouter = Router();
 
 usersRouter.get("/users", verifyToken, isAdmin, getAllUsersController);
 
-usersRouter.get("/profile", verifyToken, getProfileInfoController);
+usersRouter.get("/user/:id", verifyToken, getUserInfoController);
 
 export default usersRouter;

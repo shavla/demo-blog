@@ -1,4 +1,4 @@
-import { getAllUsers, getProfileInfo } from "../models/userModel.js";
+import { getAllUsers, getUserInfo } from "../models/userModel.js";
 
 export const getAllUsersController = async (req, res) => {
   try {
@@ -9,12 +9,13 @@ export const getAllUsersController = async (req, res) => {
   }
 };
 
-export const getProfileInfoController = async (req, res) => {
+export const getUserInfoController = async (req, res) => {
+   const { id } = req.params;
   try {
-    const userId = req.user.userId;
-    const users = await getProfileInfo(userId);
+    const users = await getUserInfo(id);
     res.status(200).json(users);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch users' });
+    res.status(500).json({ error: 'Failed to fetch user' });
   }
 };
+
