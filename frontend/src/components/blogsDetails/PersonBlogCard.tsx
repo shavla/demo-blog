@@ -1,6 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { formatDateShort } from "../../extensions/extensions";
 import { useNavigate } from "react-router-dom";
+import DropDown from "../dropdown/Dropdown";
+import type { DropdownButton } from "../../models/types/dropdown.button.type";
 
 type PersonBlogCardProps = {
     data: BlogInfo;
@@ -10,39 +12,18 @@ type PersonBlogCardProps = {
 
 const PersonBlogCard = ({ data, onDelete, isDeleting = false }: PersonBlogCardProps) => {
     const navigate = useNavigate();
-    const [open, setOpen] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setOpen(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
 
     const handleBlogClick = () => {
         navigate(`/blogDetail/${data.blog_id}`);
     };
 
-    const handleDropdownClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-        setOpen((prev) => !prev);
-    };
-
-    const handleEdit = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.stopPropagation();
+    const handleEdit = () => {
         navigate(`/editBlog/${data.blog_id}`);
-        setOpen(false);
     };
 
-    const handleDelete = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.stopPropagation();
+    const handleDelete = () => {
         setShowConfirm(true);
-        setOpen(false);
     };
 
     const confirmDelete = () => {
@@ -54,6 +35,11 @@ const PersonBlogCard = ({ data, onDelete, isDeleting = false }: PersonBlogCardPr
         setShowConfirm(false);
     };
 
+    const dropdownButtons: DropdownButton[] = [
+        { text: "Edit Story", textColor: "text-grey-500", onClick: handleEdit },
+        { text: "Delete", textColor: "text-red-500", onClick: handleDelete }
+    ]
+
     return (
         <>
             <div className="person-blog relative w-full cursor-pointer" onClick={handleBlogClick}>
@@ -61,22 +47,8 @@ const PersonBlogCard = ({ data, onDelete, isDeleting = false }: PersonBlogCardPr
                 <p className="line-clamp-2">{data.text}</p>
                 <div className="flex justify-between items-center">
                     <p>{formatDateShort(data.create_date)}</p>
-                    <div className="relative" ref={dropdownRef}>
-                        <button className="btn m-1 bg-transparent border-none w-auto h-auto" onClick={handleDropdownClick}>
-                            ...
-                        </button>
-                        {open && (
-                            <ul className="menu dropdown-content bg-base-100 rounded-box z-10 w-52 p-2 shadow-sm absolute right-0 top-full">
-                                <li>
-                                    <a onClick={handleEdit}>Edit Story</a>
-                                </li>
-                                <li>
-                                    <a onClick={handleDelete} className="text-red-500">
-                                        Delete
-                                    </a>
-                                </li>
-                            </ul>
-                        )}
+                    <div className="relative">
+                        <DropDown items={dropdownButtons}></DropDown>
                     </div>
                 </div>
             </div>

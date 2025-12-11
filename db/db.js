@@ -20,20 +20,30 @@ export async function initDB() {
         password TEXT NOT NULL,
         role VARCHAR(50) DEFAULT 'user',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-    `);
+    )`);
 
         await pool.query(`
-     CREATE TABLE IF NOT EXISTS blogs (
-                blog_id SERIAL PRIMARY KEY,
-                user_id INTEGER NOT NULL,
-                create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                title VARCHAR(255) NOT NULL,
-                text TEXT NOT NULL,
-                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-            )
-    `)
+    CREATE TABLE IF NOT EXISTS blogs (
+        blog_id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL,
+        create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        title VARCHAR(255) NOT NULL,
+        text TEXT NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )`);
+
+     await pool.query(`
+    CREATE TABLE IF NOT EXISTS comments (
+        comment_id SERIAL PRIMARY KEY,
+        blog_id INTEGER NOT NULL,
+        user_id INTEGER NOT NULL,
+        create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        text TEXT NOT NULL,
+        FOREIGN KEY (blog_id) REFERENCES blogs(blog_id) ON DELETE CASCADE,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )`)
 
         console.log("✅ All tables initialized successfully");
     } catch (err) {
