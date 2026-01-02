@@ -52,7 +52,7 @@ const LoginPage = () => {
         }
     }
 
-    return (<div className="h-[calc(100vh_-_64px)] flex items-center justify-center bg-primary">
+    return (<div className="h-[calc(100vh-80px)] relative flex items-center justify-center bg-primary">
         <div className="absolute right-0 h-1/2 z-0 md:h-4/5">
             <img className="w-full h-full object-contain" src={image} alt="register image" />
         </div>

@@ -1,5 +1,4 @@
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
-import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import CreateBlogPage from './pages/CreateBlogPage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -13,6 +12,7 @@ import Navbar from './components/navbar/Navbar';
 import { AuthProvider } from './customHooks/AuthHook';
 import AboutPage from './pages/AboutPage';
 import EditBlog from './pages/EditBlog';
+import HomePage from './pages/HomePage';
 
 function App() {
   return (
