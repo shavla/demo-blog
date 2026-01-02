@@ -83,7 +83,7 @@ export const updateComment = async (commentId: number, text: string, token: stri
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({text}),
+    body: JSON.stringify({ text }),
   });
 
   if (!response.ok) {
@@ -141,3 +141,17 @@ export const updateBlog = async (blogId: number, token: string, blogData: { titl
 
   return await response.json();
 };
+
+
+export const searchBlogs = async (title: string, token: string) => {
+  const response = await fetch(`${BASE_URL}/blog/search?q=${title}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Failed to load blog");
+  }
+
+  return response.json();
+}

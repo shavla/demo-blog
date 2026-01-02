@@ -177,10 +177,10 @@ const BlogDetailPage = () => {
                     {comments?.map((c: any) => (
                         <div key={c.comment_id} className="px-3 pt-3">
                             <div className="logo flex justify-between w-full">
-                                <div className="flex">
+                                <div className="flex items-center">
                                     <div className="logo-img w-8 h-8 bg-slate-500 rounded-full"></div>
                                     <div className="info ml-2">
-                                        <p className="font-semibold">{c.username}</p>
+                                        <Link className="font-semibold" to={`/personInfo/${c.user_id}`}>{c.username}</Link>
                                         <p className="text-xs text-gray-400">{formatDateShort(c.update_date)}</p>
                                     </div>
                                 </div>
@@ -195,18 +195,13 @@ const BlogDetailPage = () => {
                                         type="text"
                                         className="input input-bordered flex-1"
                                         value={editingCommentText}
-                                        onChange={(e) => setEditingCommentText(e.target.value)}
-                                    />
-                                    <button
-                                        className="btn btn-primary"
-                                        onClick={() => updateCommentMutation.mutate({ commentId: c.comment_id, text: editingCommentText })}
-                                    >
+                                        onChange={(e) => setEditingCommentText(e.target.value)} />
+                                    <button className="btn btn-primary"
+                                        onClick={() => updateCommentMutation.mutate({ commentId: c.comment_id, text: editingCommentText })}>
                                         Save
                                     </button>
-                                    <button
-                                        className="btn btn-secondary"
-                                        onClick={() => setEditingCommentId(null)}
-                                    >
+                                    <button className="btn btn-secondary"
+                                        onClick={() => setEditingCommentId(null)}>
                                         Cancel
                                     </button>
                                 </div>

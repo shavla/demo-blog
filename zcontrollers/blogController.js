@@ -1,4 +1,4 @@
-import { getBlog, deleteBlog, updateBlog, createBlog, getAllBlogs } from '../models/blogsModel.js';
+import { getBlog, deleteBlog, updateBlog, createBlog, getAllBlogs, searchBlogs } from '../models/blogsModel.js';
 
 export const createBlogController = async (req, res) => {
     try {
@@ -37,9 +37,24 @@ export const getBlogController = async (req, res) => {
     }
 }
 
+export const searchBlogsController = async (req, res) => {
+    try {
+        const { q } = req.query;
+        if (!q) {
+            return res.status(400).json([]);
+        }
+
+        const blogs = await searchBlogs(q);
+        res.status(200).json(blogs);
+    } catch (error) {
+        console.error('Error fetching blog:', error);
+        res.status(500).json({ message: 'Search error' });
+    }
+};
+
 export const deleteBlogController = async (req, res) => {
     const { id } = req.params;
-    const userId = req.user.userId;    
+    const userId = req.user.userId;
     const userRole = req.user.role;
 
     try {
@@ -63,7 +78,7 @@ export const deleteBlogController = async (req, res) => {
 
 export const updateBlogController = async (req, res) => {
     const { id } = req.params;
-    const userId = req.user.userId;    
+    const userId = req.user.userId;
     const { title, text } = req.body;
 
     try {

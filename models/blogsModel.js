@@ -61,6 +61,24 @@ export const getBlog = async (id) => {
     }
 }
 
+export const searchBlogs = async (title) => {
+    try {
+        const query = `
+            SELECT blog_id, title, create_date
+            FROM blogs
+            WHERE title ILIKE $1
+            ORDER BY create_date DESC
+        `;
+        const searchText = `%${title}%`;
+
+        const result = await pool.query(query, [searchText]);
+        return result.rows;
+    } catch (error) {
+        console.error("Error searching blogs:", error);
+        throw error;
+    }
+}
+
 export const deleteBlog = async (id) => {
     try {
         const query = `

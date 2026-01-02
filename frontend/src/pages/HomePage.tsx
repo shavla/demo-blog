@@ -4,6 +4,7 @@ import { useAuth } from "../customHooks/AuthHook";
 import { BASE_URL } from "../utils/consts";
 
 const HomePage = () => {
+    const { token } = useAuth();
     const navigate = useNavigate();
 
     const [users, setUser] = useState<any>(null);
@@ -21,16 +22,6 @@ const HomePage = () => {
             console.error('Error fetching user:', error);
         }
     }
-
-    const handleLogOut = async () => {
-        logout();
-    }
-
-    const handleLogIn = () => {
-        navigate("/login");
-    }
-
-    const { logout, token } = useAuth();
 
     useEffect(() => {
         if (!token) return;
@@ -57,9 +48,6 @@ const HomePage = () => {
     }
 
     return (<>
-        <button onClick={handleLogOut} className="btn btn-primary">Log out</button>
-        <button onClick={handleLogIn} className="btn btn-primary">Log in</button>
-
         <h1>homepage</h1>
         <button onClick={handleClick} className="btn btn-neutral">Neutral</button>
         {blogs?.length > 0 && (
