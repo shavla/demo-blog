@@ -1,6 +1,6 @@
 import { Search, SquarePen } from "lucide-react";
 import Logo from "./Logo";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../customHooks/AuthHook";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -12,6 +12,7 @@ const AuthenticatedNavbar = ({ username, userId }: { username?: string; userId?:
     const [search, setSearch] = useState("");
     const [open, setOpen] = useState(false);
 
+    const navigate = useNavigate();
     const debouncedSearch = useDebounce(search, 500);
 
     const { data, isLoading } = useQuery({
@@ -20,6 +21,11 @@ const AuthenticatedNavbar = ({ username, userId }: { username?: string; userId?:
         enabled: !!debouncedSearch.trim(),
         staleTime: 1000 * 30,
     });
+
+    const handleLogout = () =>{
+        navigate("/");
+        logout();
+    }
 
     return (
         <nav className="h-14 flex items-center justify-around">
@@ -73,12 +79,12 @@ const AuthenticatedNavbar = ({ username, userId }: { username?: string; userId?:
                 </Link>
 
                 <div className="dropdown dropdown-end">
-                    <div tabIndex={0}>{username}</div>
+                    <div tabIndex={0} className="cursor-pointer">{username}</div>
                     <ul className="dropdown-content menu bg-base-100 rounded-box w-52 p-2 shadow-lg mt-3">
                         <li>
                             <Link to={`/personInfo/${userId}`}>View Profile</Link>
                         </li>
-                        <button onClick={logout} className="btn btn-primary">
+                        <button onClick={handleLogout} className="btn btn-primary">
                             Sign out
                         </button>
                     </ul>

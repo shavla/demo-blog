@@ -1,4 +1,4 @@
-import { getBlog, deleteBlog, updateBlog, createBlog, getAllBlogs, searchBlogs } from '../models/blogsModel.js';
+import { getBlog, deleteBlog, updateBlog, createBlog, getAllBlogs, searchBlogs, getPaginatedBlogs } from '../models/blogsModel.js';
 
 export const createBlogController = async (req, res) => {
     try {
@@ -15,6 +15,25 @@ export const createBlogController = async (req, res) => {
         res.status(500).json({ message: 'Failed to create blog' });
     }
 }
+
+export const getPaginatedBlogsController = async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+
+        const { blogs, totalCount } = await getPaginatedBlogs(page, limit);
+        res.status(200).json({
+            page,
+            limit,
+            blogs,
+            totalPages: Math.ceil(totalCount / limit)
+            // totalPages:10
+        });
+    } catch (error) {
+        console.error('Error fetching blogs:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
 
 export const getAllBlogsController = async (req, res) => {
     try {

@@ -37,6 +37,36 @@ export const getAllBlogs = async () => {
     }
 }
 
+export const getPaginatedBlogs = async (page = 1, limit = 10) => {
+    try {
+        const offset = (page - 1) * limit;
+
+        const blogsQuery = `
+        SELECT * FROM blogs
+        ORDER BY update_date DESC
+        LIMIT $1 OFFSET $2
+        `;
+
+        const countQuery = `
+        SELECT COUNT(*) FROM blogs
+        `;
+
+        const [blogsResult, countResult] = await Promise.all([
+            pool.query(blogsQuery, [limit, offset]),
+            pool.query(countQuery),
+        ]);
+
+        return {
+            blogs: blogsResult.rows,
+            totalCount: Number(countResult.rows[0].count)
+        };
+
+    } catch (error) {
+        console.error("Error getting blogs:", error);
+        throw error;
+    }
+};
+
 export const getBlog = async (id) => {
     try {
         const query = `

@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { createBlogController, deleteBlogController, getAllBlogsController, getBlogController, searchBlogsController, updateBlogController } from "../zcontrollers/blogController.js";
+import { createBlogController, deleteBlogController, getAllBlogsController, getBlogController, getPaginatedBlogsController, searchBlogsController, updateBlogController } from "../zcontrollers/blogController.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
 
 const blogRouter = Router();
 
 blogRouter.post("/createblog", verifyToken, createBlogController);
 
-blogRouter.get("/blogs", verifyToken, getAllBlogsController);
+blogRouter.get("/blogs", verifyToken, getPaginatedBlogsController);
 
 blogRouter.get("/blog/search", verifyToken, searchBlogsController);
 

@@ -28,7 +28,6 @@ export const createBlog = async (token: string, blogData: { title: string; conte
 };
 
 export const createComment = async (token: string, commentData: { text: string; blogId: string }) => {
-  console.log(commentData)
   const response = await fetch(`${BASE_URL}/createComment`, {
     method: "POST",
     headers: {
@@ -97,6 +96,19 @@ export const updateComment = async (commentId: number, text: string, token: stri
 
 export const getBlog = async (blogId: number, token: string) => {
   const response = await fetch(`${BASE_URL}/blog/${blogId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Failed to load blog");
+  }
+
+  return response.json();
+};
+
+export const getPaginatedBlogs = async (page: number, token: string) => {
+  const response = await fetch(`${BASE_URL}/blogs?page=${page}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 

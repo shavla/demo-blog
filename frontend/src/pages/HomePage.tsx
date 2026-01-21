@@ -1,52 +1,32 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../customHooks/AuthHook";
-import { BASE_URL } from "../utils/consts";
 import image from "../assets/register_img.png";
+import { useQuery } from "@tanstack/react-query";
+import { getPaginatedBlogs } from "../api/userApi";
+import Pagination from "../components/pagination/Pagination";
+import type { BlogInfoType } from "../models/types/blog.type";
+import BlogInfo from "../components/blogsDetails/BlogInfo";
 
 const HomePage = () => {
     const { token, isAuthenticated } = useAuth();
-    const navigate = useNavigate();
 
-    const [users, setUser] = useState<any>(null);
-    const [blogs, setBlogs] = useState<any>(null);
+    const [page, setPage] = useState(1);
 
-    const handleClick = async () => {
-        try {
-            const response = await fetch(BASE_URL + '/users', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            const data = await response.json();
-            console.log('User inserted:', data);
-            setUser(data);
-        } catch (error) {
-            console.error('Error fetching user:', error);
-        }
-    }
+    const { data, isLoading, error } = useQuery({
+        queryKey: ['blogs', page],
+        queryFn: () => getPaginatedBlogs(page, token!),
+        enabled: !!token
+    });
 
     useEffect(() => {
-        if (!token) return;
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    }, [page]);
 
-        const fetchBlogs = async () => {
-            try {
-                console.log('Using token:', token);
-                const response = await fetch(BASE_URL + '/blogs', {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                const data = await response.json();
-                console.log('Blogs fetched:', data);
-                setBlogs(data);
-            } catch (error) {
-                console.error('Error fetching blogs:', error);
-            }
-        };
-
-        fetchBlogs();
-    }, [token]);
-
-    const handleBlogClick = (id: number) => {
-        navigate(`/blogDetail/${id}`);
-    }
+    console.log(data)
 
     if (!isAuthenticated) {
         return (<>
@@ -55,42 +35,38 @@ const HomePage = () => {
                     <img className="w-full h-full object-contain" src={image} alt="register image" />
                 </div>
                 <div className="w-full max-w-4xl ml-12 lg:mx-auto z-10">
-                    <h1 className="font-bold text-8xl">Human<br />stories & ideas</h1>
-                    <p className="font-thin text-2xl mt-4">A place to read, write, and deepen your understanding</p>
-                    <Link className="inline-block text-lg mt-8 bg-slate-950 text-green-50 rounded-full px-8 py-2"
-                        to="/register">Get started</Link>
+                    <h1 className="font-bold text-7xl md:text-8xl">Human<br />stories & ideas</h1>
+                    <p className="font-light text-2xl mt-4">A place to read, write, and deepen your understanding</p>
+                    <Link className="inline-block text-lg mt-8 bg-green-700 text-green-50 rounded-full px-8 py-2 md:bg-slate-950"
+                        to="/login">Start reading</Link>
                 </div>
             </div>
         </>)
     }
+    
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-[60vh]">
+                <p className="text-lg">Loading blogs...</p>
+            </div>
+        );
+    }
 
     return (<>
-        <h1>HomePage</h1>
-        <button onClick={handleClick} className="btn btn-neutral">Neutral</button>
-        {blogs?.length > 0 && (
-            <div>
-                <h1>blogs</h1>
-                {blogs.map((blog: any) => (
-                    <div onClick={() => handleBlogClick(blog.blog_id)} key={blog.blog_id} className="flex">
-                        <p className="mr-3">{blog.username}</p>
-                        <p>{blog.title}</p>
-                    </div>
-                ))}
-            </div>
-        )}
+        <h1 className="mt-8 mb-10 text-center text-xl">For You</h1>
+        <div className="blog-list max-w-5xl mx-auto px-10 py-5 grid grid-cols-1 gap-5 md:grid-cols-2">
+            {data?.blogs.map((blog: BlogInfoType) => (
+                <BlogInfo key={blog.blog_id} blogInfo={blog}></BlogInfo>
+            ))}
+        </div>
+        <div className="pagination mt-10 mb-28">
+            <Pagination
+                currentPage={page}
+                totalPages={data?.totalPages}
+                onPageChange={setPage}
+            />
+        </div>
 
-        {users?.length > 0 && (
-            <div>
-                <h3>Users List:</h3>
-                <ul>
-                    {users.map((user: any) => (
-                        <li key={user.id}>
-                            <strong>{user.username}</strong> - {user.email} - {user.role}
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        )}
     </>);
 }
 
