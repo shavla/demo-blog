@@ -47,7 +47,7 @@ const PersonInfoPage = () => {
                 <h1 className="text-4xl font-bold">{data?.username}</h1>
             </div>
 
-            <div className="blogs max-w-xl w-3/4 p-7 flex flex-col items-center gap-8">
+            <div className="blogs max-w-xl w-full p-7 flex flex-col items-center gap-8 md:w-3/4">
                 {blogs.length === 0 ? (
                     <p>No blogs yet</p>
                 ) : (

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../customHooks/AuthHook";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -30,6 +30,13 @@ const BlogDetailPage = () => {
         queryFn: () => getComments(blog!.blog_id, token!),
         enabled: !!blog?.blog_id && !!token,
     });
+
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    }, []);
 
     const deleteMutation = useMutation({
         mutationFn: () => deleteBlog(Number(id), token!),

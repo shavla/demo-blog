@@ -22,17 +22,24 @@ const AuthenticatedNavbar = ({ username, userId }: { username?: string; userId?:
         staleTime: 1000 * 30,
     });
 
-    const handleLogout = () =>{
+    const handleLogout = () => {
         navigate("/");
         logout();
     }
 
     return (
-        <nav className="h-14 flex items-center justify-around">
+        <nav className="h-20 flex items-center justify-around">
+            <div className="flex md:hidden p-2 bg-green-700 rounded-lg text-white font-bold">
+                <Link to={"/"}>
+                    B
+                </Link>
+            </div>
             <div className="flex items-center relative">
-                <Logo />
-                <div className="relative ml-6">
-                    <div className="flex items-center gap-2 w-64 h-9 px-3 rounded-full bg-gray-50">
+                <div className="logo hidden md:flex">
+                    <Logo />
+                </div>
+                <div className="relative md:ml-6">
+                    <div className="flex items-center gap-2 max-w-64 h-9 px-3 rounded-full bg-gray-50">
                         <Search className="text-gray-400 text-sm" />
                         <input
                             type="text"
@@ -65,7 +72,9 @@ const AuthenticatedNavbar = ({ username, userId }: { username?: string; userId?:
                                         to={`/blogDetail/${item.blog_id}`}
                                         className="flex items-center px-3 h-12 text-sm hover:bg-gray-100"
                                     >
-                                        {item.title}
+                                        <span className="truncate w-full">
+                                            {item.title}
+                                        </span>
                                     </Link>
                                 ))}
                         </div>
@@ -74,7 +83,7 @@ const AuthenticatedNavbar = ({ username, userId }: { username?: string; userId?:
             </div>
 
             <div className="flex gap-4 text-gray-500">
-                <Link to="/createBlog" className="flex">
+                <Link to="/createBlog" className="hidden md:flex">
                     <SquarePen className="mr-2" /> Write
                 </Link>
 
@@ -83,6 +92,7 @@ const AuthenticatedNavbar = ({ username, userId }: { username?: string; userId?:
                     <ul className="dropdown-content menu bg-base-100 rounded-box w-52 p-2 shadow-lg mt-3">
                         <li>
                             <Link to={`/personInfo/${userId}`}>View Profile</Link>
+                            <Link to="/createBlog" className="flex md:hidden">Write</Link>
                         </li>
                         <button onClick={handleLogout} className="btn btn-primary">
                             Sign out

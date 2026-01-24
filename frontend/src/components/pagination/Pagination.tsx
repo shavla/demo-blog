@@ -1,3 +1,5 @@
+import { CircleArrowLeft, CircleArrowRight } from "lucide-react";
+
 const Pagination = ({
     currentPage,
     totalPages,
@@ -40,8 +42,8 @@ const Pagination = ({
             <button
                 disabled={currentPage === 1}
                 onClick={() => onPageChange(currentPage - 1)}
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-200
-                   disabled:opacity-50">←</button>
+                className="flex h-9 w-9 items-center justify-center rounded-full 
+                   disabled:opacity-50"><CircleArrowLeft></CircleArrowLeft></button>
 
             {getPages().map((page, index) =>
                 page === "..." ? (
@@ -68,8 +70,8 @@ const Pagination = ({
             <button
                 disabled={currentPage === totalPages}
                 onClick={() => onPageChange(currentPage + 1)}
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-200
-                   disabled:opacity-50">→</button>
+                className="flex h-9 w-9 items-center justify-center rounded-full
+                   disabled:opacity-50"><CircleArrowRight></CircleArrowRight></button>
         </div>
     );
 };

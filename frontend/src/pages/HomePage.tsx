@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useAuth } from "../customHooks/AuthHook";
 import image from "../assets/register_img.png";
 import { useQuery } from "@tanstack/react-query";
@@ -11,7 +11,12 @@ import BlogInfo from "../components/blogsDetails/BlogInfo";
 const HomePage = () => {
     const { token, isAuthenticated } = useAuth();
 
-    const [page, setPage] = useState(1);
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const page = Number(searchParams.get("page")) || 1;
+    const setPage = (newPage: number) => {
+        setSearchParams({ page: newPage.toString() });
+    };
 
     const { data, isLoading, error } = useQuery({
         queryKey: ['blogs', page],
@@ -36,14 +41,14 @@ const HomePage = () => {
                 </div>
                 <div className="w-full max-w-4xl ml-12 lg:mx-auto z-10">
                     <h1 className="font-bold text-7xl md:text-8xl">Human<br />stories & ideas</h1>
-                    <p className="font-light text-2xl mt-4">A place to read, write, and deepen your understanding</p>
-                    <Link className="inline-block text-lg mt-8 bg-green-700 text-green-50 rounded-full px-8 py-2 md:bg-slate-950"
+                    <p className="font-light text-2xl mt-10 md:mt-4">A place to read, write, and deepen your understanding</p>
+                    <Link className="inline-block text-lg mt-16 bg-green-700 text-green-50 rounded-full px-8 py-2 md:bg-slate-950 md:mt-8"
                         to="/login">Start reading</Link>
                 </div>
             </div>
         </>)
     }
-    
+
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-[60vh]">
@@ -59,7 +64,7 @@ const HomePage = () => {
                 <BlogInfo key={blog.blog_id} blogInfo={blog}></BlogInfo>
             ))}
         </div>
-        <div className="pagination mt-10 mb-28">
+        <div className="pagination mt-10 mb-20">
             <Pagination
                 currentPage={page}
                 totalPages={data?.totalPages}
