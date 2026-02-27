@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
 import { isTokenValid, getUser, getToken } from '../utils/auth';
-import { useNavigate } from "react-router-dom";
+import { connectSocket, disconnectSocket } from "../utils/socketService";
 
 interface User {
   id: number;
@@ -24,7 +24,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const checkAuth = () => {
@@ -32,9 +31,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const storedUser = getUser();
       const storedToken = getToken();
 
-      setUser(valid ? storedUser : null);
-      setToken(valid ? storedToken : null);
-      setIsAuthenticated(valid);
+       if (valid && storedUser) {
+        setUser(storedUser);
+        setToken(storedToken);
+        setIsAuthenticated(true);
+        connectSocket(storedUser.id); // reconnect socket on page refresh
+      }
       setLoading(false);
     };
 
@@ -47,6 +49,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(user);
     setToken(token);
     setIsAuthenticated(true);
+    connectSocket(user.id);
   };
 
   const logout = () => {
@@ -55,6 +58,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
     setToken(null);
     setIsAuthenticated(false);
+    disconnectSocket();
     // navigate("/login"); // redirect without reload
   };
 

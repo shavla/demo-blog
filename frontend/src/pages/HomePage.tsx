@@ -21,7 +21,7 @@ const HomePage = () => {
     const { data, isLoading, error } = useQuery({
         queryKey: ['blogs', page],
         queryFn: () => getPaginatedBlogs(page, token!),
-        enabled: !!token
+        enabled: Boolean(token)
     });
 
     useEffect(() => {

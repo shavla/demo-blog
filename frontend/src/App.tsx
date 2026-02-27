@@ -13,13 +13,13 @@ import { AuthProvider } from './customHooks/AuthHook';
 import AboutPage from './pages/AboutPage';
 import EditBlog from './pages/EditBlog';
 import HomePage from './pages/HomePage';
-
+import SessionConflictPopup from './components/SessionConflictPopup'; 
 function App() {
   return (
     <Router>
       <AuthProvider>
-
-        <Navbar></Navbar>
+        <SessionConflictPopup /> 
+        <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />

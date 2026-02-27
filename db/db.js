@@ -33,17 +33,17 @@ export async function initDB() {
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     )`);
 
-     await pool.query(`
+      await pool.query(`
     CREATE TABLE IF NOT EXISTS comments (
         comment_id SERIAL PRIMARY KEY,
         blog_id INTEGER NOT NULL,
         user_id INTEGER NOT NULL,
         create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        text TEXT NOT NULL,
-        FOREIGN KEY (blog_id) REFERENCES blogs(blog_id) ON DELETE CASCADE,
-        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-    )`)
+        text VARCHAR(255) NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY (blog_id) REFERENCES blogs(blog_id) ON DELETE CASCADE
+    )`);
 
         console.log("✅ All tables initialized successfully");
     } catch (err) {

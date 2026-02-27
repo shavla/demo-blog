@@ -22,13 +22,13 @@ const BlogDetailPage = () => {
     const { data: blog, isLoading, isError, error } = useQuery({
         queryKey: ["blog", id],
         queryFn: () => getBlog(Number(id), token!),
-        enabled: !!token && !!id,
+        enabled: Boolean(token && id),
     });
 
     const { data: comments } = useQuery({
         queryKey: ["comments", blog?.blog_id],
         queryFn: () => getComments(blog!.blog_id, token!),
-        enabled: !!blog?.blog_id && !!token,
+        enabled: Boolean(blog?.blog_id && token),
     });
 
     useEffect(() => {

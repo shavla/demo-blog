@@ -1,6 +1,7 @@
 import { createUser, getUserByEmail } from "../models/authModel.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { io, userSockets } from "../index.js";
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-key'; // Use env variable in production
 
@@ -12,6 +13,13 @@ const generateToken = (userId, email, role) => {
         { expiresIn: process.env.JWT_EXPIRES_IN }
     );
 };
+
+function notifyOldSession(userId) {
+    const existingSocketId = userSockets.get(String(userId));
+    if (existingSocketId) {
+        io.to(existingSocketId).emit('session_conflict');
+    }
+}
 
 export const registerUser = async (req, res) => {
     try {
@@ -52,6 +60,8 @@ export const loginUser = async (req, res) => {
 
         const token = generateToken(user.id, user.email, user.role);
         const { password: _, ...safeUser } = user;
+
+        notifyOldSession(user.id);
 
         res.status(200).json({
             message: 'Login successful',

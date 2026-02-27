@@ -16,7 +16,7 @@ const EditBlog = () => {
     const { data: blog, isLoading, isError } = useQuery({
         queryKey: ["blog", id],
         queryFn: () => getBlog(Number(id), token!),
-        enabled: !!token,
+        enabled: Boolean(token),
     });
 
     useEffect(() => {

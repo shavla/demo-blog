@@ -14,7 +14,7 @@ const PersonInfoPage = () => {
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ["profile", token ,id],
         queryFn: () => fetchUserInfo(token!, Number(id)),
-        enabled: !!token && !!id,
+        enabled: Boolean(token && id),
     });
 
 
