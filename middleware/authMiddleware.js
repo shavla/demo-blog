@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { blacklistedTokens } from '../index.js';
 
 export const verifyToken = (req, res, next) => {
   // Extract token from Authorization header
@@ -11,6 +12,14 @@ export const verifyToken = (req, res, next) => {
       error: 'NO_TOKEN'
     });
   }
+
+  if (blacklistedTokens.has(token)) {
+    return res.status(401).json({
+      message: 'Session expired. Please login again.',
+      error: 'SESSION_EXPIRED'
+    });
+  }
+
 
   // Ensure JWT_SECRET exists
   const JWT_SECRET = process.env.JWT_SECRET;

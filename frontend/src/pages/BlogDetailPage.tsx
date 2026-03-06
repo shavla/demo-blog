@@ -7,6 +7,7 @@ import { formatDateShort } from "../extensions/extensions";
 import CommentField from "../components/comments/CommentField";
 import type { DropdownButton } from "../models/types/dropdown.button.type";
 import DropDown from "../components/dropdown/Dropdown";
+import type { BlogInfoType } from "../models/types/blog.type";
 
 const BlogDetailPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -19,7 +20,7 @@ const BlogDetailPage = () => {
     const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
     const [editingCommentText, setEditingCommentText] = useState<string>("");
 
-    const { data: blog, isLoading, isError, error } = useQuery({
+    const { data: blog, isLoading, isError, error } = useQuery<BlogInfoType>({
         queryKey: ["blog", id],
         queryFn: () => getBlog(Number(id), token!),
         enabled: Boolean(token && id),
@@ -52,7 +53,7 @@ const BlogDetailPage = () => {
 
     const createCommentMutaion = useMutation({
         mutationFn: (comment: string) =>
-            createComment(token!, { text: comment, blogId: blog.blog_id }),
+            createComment(token!, { text: comment, blogId: blog!.blog_id }),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["comments", blog!.blog_id] });
             setResetCommentField(prev => prev + 1);
@@ -153,12 +154,17 @@ const BlogDetailPage = () => {
 
     return (
         <>
-            <div className="container mx-auto p-8 max-w-5xl">
+            <div className="container mx-auto p-8 max-w-4xl">
                 <h1 className="text-4xl font-bold mb-4">{blog.title}</h1>
-                <p className="text-gray-600 mb-2">Author: <Link to={`/personInfo/${blog.user_id}`}> {blog.username} </Link></p>
-                <p className="text-gray-500 mb-6">
-                    Created: {formatDateShort(blog.create_date)}
-                </p>
+                <div className="flex items-center gap-3 mb-6">
+                    <div className="w-10 h-10 bg-slate-500 rounded-full" />
+                    <div>
+                        <Link to={`/personInfo/${blog.user_id}`} className="font-semibold hover:underline">
+                            {blog.username}
+                        </Link>
+                        <p className="text-xs text-gray-400">{formatDateShort(blog.create_date)}</p>
+                    </div>
+                </div>
                 <div className="prose max-w-none mb-6 whitespace-pre-wrap">{blog.text}</div>
 
                 {isAuthor && (
@@ -180,6 +186,10 @@ const BlogDetailPage = () => {
 
                 <div className="comments mt-12 border-t-2">
                     <p className="text-xl font-semibold my-5">Responses ({comments?.length})</p>
+
+                    <div className="my-5">
+                        <CommentField callback={handleCommentRespond} resetSignal={resetCommentField}></CommentField>
+                    </div>
 
                     {comments?.map((c: any) => (
                         <div key={c.comment_id} className="px-3 pt-3">
@@ -218,9 +228,7 @@ const BlogDetailPage = () => {
                         </div>
                     ))}
                 </div>
-                <div className="mt-10">
-                    <CommentField callback={handleCommentRespond} resetSignal={resetCommentField}></CommentField>
-                </div>
+
             </div>
 
             {showConfirm && (

@@ -4,5 +4,6 @@ export type BlogInfoType = {
     text: string;
     title: string;
     update_date: string;
-    user_id: number
+    user_id: number,
+    username: string;
 }

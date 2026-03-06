@@ -1,7 +1,7 @@
 import { createUser, getUserByEmail } from "../models/authModel.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { io, userSockets } from "../index.js";
+import { blacklistedTokens, io, userSockets, userTokens } from "../index.js";
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-key'; // Use env variable in production
 
@@ -16,6 +16,13 @@ const generateToken = (userId, email, role) => {
 
 function notifyOldSession(userId) {
     const existingSocketId = userSockets.get(String(userId));
+    const oldToken = userTokens.get(String(userId));
+
+    if (oldToken) {
+        blacklistedTokens.add(oldToken);
+        console.log(`Token blacklisted for user ${userId}`);
+    }
+
     if (existingSocketId) {
         io.to(existingSocketId).emit('session_conflict');
     }
@@ -58,10 +65,12 @@ export const loginUser = async (req, res) => {
             return res.status(401).json({ message: 'nopt good password' });
         }
 
+        notifyOldSession(user.id);
+
         const token = generateToken(user.id, user.email, user.role);
         const { password: _, ...safeUser } = user;
-
-        notifyOldSession(user.id);
+        
+        userTokens.set(String(user.id), token); 
 
         res.status(200).json({
             message: 'Login successful',

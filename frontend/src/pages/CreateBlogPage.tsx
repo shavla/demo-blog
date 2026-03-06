@@ -34,59 +34,47 @@ const CreateBlogPage: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        if (!blogData.title.trim() || !blogData.content.trim()) return;
         createBlogMutation.mutate(blogData);
     };
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <div className="max-w-2xl mx-auto">
-                <h1 className="text-3xl font-bold mb-6">Create New Blog Post</h1>
-                <p className="text-gray-600 mb-8">
-                    Welcome, {user?.username}! Let's start writing a new story!
-                </p>
-
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Blog Title
-                        </label>
-                        <input
-                            type="text"
-                            name="title"
-                            value={blogData.title}
-                            onChange={handleInputChange}
-                            required
-                            className="input input-bordered w-full"
-                            placeholder="Enter blog title"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Content
-                        </label>
-                        <textarea
-                            name="content"
-                            value={blogData.content}
-                            onChange={handleInputChange}
-                            required
-                            rows={10}
-                            className="textarea textarea-bordered w-full"
-                            placeholder="Write your blog content here..."
-                        />
-                    </div>
-
+        <div className="container mx-auto p-8 max-w-4xl">
+                <h1 className="text-3xl font-bold mb-6">Create New Blog</h1>
+                <div className="flex justify-between items-center mb-5">
+                    <p className="text-gray-600">
+                        Welcome, {user?.username}! Let's start writing a new story!
+                    </p>
                     <button
-                        type="submit"
-                        disabled={createBlogMutation.isPending}
-                        className="btn btn-primary w-full"
+                        onClick={handleSubmit}
+                        disabled={createBlogMutation.isPending || !blogData.title.trim() || !blogData.content.trim()}
+                        className="btn btn-sm btn-primary rounded-full px-6 disabled:opacity-50 disabled:cursor-not-allowed ml-3"
                     >
-                        {createBlogMutation.isPending
-                            ? "Creating..."
-                            : "Create Blog Post"}
+                        {createBlogMutation.isPending ? "Publishing..." : "Publish"}
                     </button>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <input
+                        type="text"
+                        name="title"
+                        value={blogData.title}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full text-4xl font-bold border-none outline-none placeholder-gray-300 leading-normal pb-1"
+                        placeholder="Title"
+                    />
+                    <hr />
+                    <textarea
+                        name="content"
+                        value={blogData.content}
+                        onChange={handleInputChange}
+                        required
+                        rows={14}
+                        className="w-full text-lg border-none outline-none placeholder-gray-300 resize-none"
+                        placeholder="Tell your story..."
+                    />
                 </form>
-            </div>
         </div>
     );
 };

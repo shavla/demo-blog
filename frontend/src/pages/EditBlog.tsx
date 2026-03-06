@@ -38,57 +38,48 @@ const EditBlog = () => {
         },
     });
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        if (!title.trim() || !text.trim()) return;
         updateMutation.mutate({ title, text });
     };
 
-    if (isLoading) return <p>Loading blog...</p>;
-    if (isError) return <p>Error loading blog</p>;
+    if (isLoading) return <p className="p-8">Loading blog...</p>;
+    if (isError) return <p className="p-8 text-red-500">Error loading blog</p>;
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <div className="max-w-2xl mx-auto">
-                <h2 className="text-3xl font-bold mb-6">Edit Blog</h2>
-
-                <form onSubmit={handleSubmit} className="space-y-6">
-
-                    <div>
-                        <label className="block text-sm font-medium mb-2">
-                            Blog Title
-                        </label>
-                        <input
-                            type="text"
-                            className="input input-bordered w-full"
-                            required
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium mb-2">
-                            Content
-                        </label>
-                        <textarea
-                            className="textarea textarea-bordered w-full"
-                            rows={10}
-                            required
-                            value={text}
-                            onChange={(e) => setText(e.target.value)}
-                        />
-                    </div>
-
-                    <button
-                        type="submit"
-                        disabled={updateMutation.isPending}
-                        className="btn btn-primary w-full"
-                    >
-                        {updateMutation.isPending ? "Updating..." : "Update Blog"}
-                    </button>
-
-                </form>
+        <div className="container mx-auto p-8 max-w-4xl">
+            <h1 className="text-3xl font-bold mb-6">Edit Blog</h1>
+            <div className="flex justify-between items-center mb-5">
+                <p className="text-gray-600">Make your changes below.</p>
+                <button
+                    onClick={handleSubmit}
+                    disabled={updateMutation.isPending || !title.trim() || !text.trim()}
+                    className="btn btn-sm btn-primary rounded-full px-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    {updateMutation.isPending ? "Saving..." : "Save Changes"}
+                </button>
             </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <input
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    required
+                    className="w-full text-4xl font-bold border-none outline-none placeholder-gray-300 leading-normal pb-1"
+                    placeholder="Title"
+                />
+                <hr />
+                <textarea
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    required
+                    rows={14}
+                    className="w-full text-lg border-none outline-none placeholder-gray-300 resize-none"
+                    placeholder="Tell your story..."
+                />
+            </form>
         </div>
     );
 };

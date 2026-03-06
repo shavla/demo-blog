@@ -27,6 +27,10 @@ const AuthenticatedNavbar = ({ username, userId }: { username?: string; userId?:
         logout();
     }
 
+    const handleCloseDropdown = () => {
+        (document.activeElement as HTMLElement)?.blur();
+    }
+
     return (
         <nav className="h-20 flex items-center justify-around">
             <div className="flex md:hidden p-2 bg-green-700 rounded-lg text-white font-bold">
@@ -89,7 +93,7 @@ const AuthenticatedNavbar = ({ username, userId }: { username?: string; userId?:
 
                 <div className="dropdown dropdown-end">
                     <div tabIndex={0} className="cursor-pointer">{username}</div>
-                    <ul className="dropdown-content menu bg-base-100 rounded-box w-52 p-2 shadow-lg mt-3">
+                    <ul className="dropdown-content menu bg-gray-50 rounded-box w-52 p-2 shadow-lg mt-3" onClick={handleCloseDropdown}>
                         <li>
                             <Link to={`/personInfo/${userId}`}>View Profile</Link>
                             <Link to="/createBlog" className="flex md:hidden">Write</Link>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useAuth } from "../customHooks/AuthHook";
 import image from "../assets/register_img.png";
@@ -7,6 +7,7 @@ import { getPaginatedBlogs } from "../api/userApi";
 import Pagination from "../components/pagination/Pagination";
 import type { BlogInfoType } from "../models/types/blog.type";
 import BlogInfo from "../components/blogsDetails/BlogInfo";
+import type { PageInfoType } from "../models/types/page.type";
 
 const HomePage = () => {
     const { token, isAuthenticated } = useAuth();
@@ -18,7 +19,7 @@ const HomePage = () => {
         setSearchParams({ page: newPage.toString() });
     };
 
-    const { data, isLoading, error } = useQuery({
+    const { data, isLoading } = useQuery<PageInfoType>({
         queryKey: ['blogs', page],
         queryFn: () => getPaginatedBlogs(page, token!),
         enabled: Boolean(token)
@@ -67,7 +68,7 @@ const HomePage = () => {
         <div className="pagination mt-10 mb-20">
             <Pagination
                 currentPage={page}
-                totalPages={data?.totalPages}
+                totalPages={data!.totalPages}
                 onPageChange={setPage}
             />
         </div>

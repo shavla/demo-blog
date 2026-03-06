@@ -17,6 +17,8 @@ const PORT = process.env.PORT || 5000;
 
 // In-memory store: userId -> socketId
 export const userSockets = new Map();
+export const blacklistedTokens = new Set();
+export const userTokens = new Map();
 
 // Socket.IO setup
 export const io = new Server(httpServer, {
@@ -39,11 +41,11 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     for (const [userId, socketId] of userSockets.entries()) {
-      if (socketId === socket.id) {
-        userSockets.delete(userId);
-        console.log(`User ${userId} disconnected`);
-        break;
-      }
+        if (socketId === socket.id) {
+            userSockets.delete(userId);
+            console.log(`Removed userId ${userId}`);
+            break;
+        }
     }
   });
 });

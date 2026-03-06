@@ -1,4 +1,3 @@
-// src/components/SessionConflictPopup.tsx
 import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "../customHooks/AuthHook";
 import { getSocket } from "../utils/socketService";
@@ -17,20 +16,28 @@ const SessionConflictPopup = () => {
     }, [logout, navigate]);
 
     useEffect(() => {
-        if (!isAuthenticated) return; // don't listen if not logged in
+        if (!isAuthenticated) return;
 
         const socket = getSocket();
 
-        socket.on("session_conflict", () => {
+        const handleConflict = () => {
             setVisible(true);
             setCountdown(30);
+        };
+
+        socket.on('session_conflict', handleConflict);
+
+        socket.on('connect', () => {
+            socket.off('session_conflict');
+            socket.on('session_conflict', handleConflict);
         });
 
         return () => {
-            socket.off("session_conflict");
+            socket.off('session_conflict', handleConflict);
+            socket.off('connect');
         };
     }, [isAuthenticated]);
-    // Countdown timer — auto logout when it hits 0
+
     useEffect(() => {
         if (!visible) return;
 
@@ -57,9 +64,8 @@ const SessionConflictPopup = () => {
                 </p>
                 <button
                     onClick={handleLogout}
-                    className="btn btn-error w-full text-white"
-                >
-                    OK, Log Me Out
+                    className="btn btn-error w-full text-white">
+                    Log Out
                 </button>
             </div>
         </div>

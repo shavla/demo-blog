@@ -28,7 +28,7 @@ const DropDown = ({ items }: { items: DropdownButton[] }) => {
                 ...
             </button>
             {open && (
-                <ul className="menu dropdown-content bg-base-100 rounded-box z-10 w-52 p-2 shadow-sm absolute right-0 top-full">
+                <ul className="menu dropdown-content bg-gray-50 rounded-box z-10 w-52 p-2 shadow-sm absolute right-0 top-full">
                     {items.map((item, index) => (
                         <li className={item.textColor} key={index}>
                             <a onClick={(e) => {

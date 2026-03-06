@@ -45,7 +45,6 @@ const LoginPage = () => {
                 console.log('login failed:', errorData.message); // Will log "not good email"
                 // TODO create popup
 
-                // console.error('Registration failed:', response);
             }
         } catch (error) {
             console.error('Error during registration:', error);

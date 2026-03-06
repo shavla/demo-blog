@@ -1,4 +1,3 @@
-// src/utils/socketService.ts
 import { io, Socket } from 'socket.io-client';
 import { BASE_URL } from './consts';
 
@@ -13,8 +12,18 @@ export const getSocket = (): Socket => {
 
 export const connectSocket = (userId: number) => {
     const s = getSocket();
-    if (!s.connected) s.connect();
-    s.emit('register', userId);
+
+    s.off('connect'); 
+
+    s.on('connect', () => {
+        s.emit('register', userId); 
+    });
+
+    if (!s.connected) {
+        s.connect();
+    } else {
+        s.emit('register', userId);
+    }
 };
 
 export const disconnectSocket = () => {
