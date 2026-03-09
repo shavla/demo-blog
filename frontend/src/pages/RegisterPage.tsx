@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/consts";
 import image from "../assets/register_img.png";
+import { useAuth } from "../customHooks/AuthHook";
 
 const RegisterPage = () => {
     const navigate = useNavigate();
+    const { login } = useAuth();
     const [userInfo, setUserInfo] = useState({
         userName: "",
         email: "",
@@ -36,8 +38,9 @@ const RegisterPage = () => {
                 const data = await response.json();
                 console.log('Registration successful:', data);
 
-                localStorage.setItem('token', data.token);
+                // localStorage.setItem('token', data.token);
                 setUserInfo({ userName: "", email: "", password: "" });
+                login(data.newUser, data.token);
                 navigate("/")
             } else {
                 const errorData = await response.json();

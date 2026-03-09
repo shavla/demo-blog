@@ -19,7 +19,8 @@ export async function initDB() {
         email VARCHAR(255) UNIQUE NOT NULL,
         password TEXT NOT NULL,
         role VARCHAR(50) DEFAULT 'user',
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        avatar VARCHAR(50) DEFAULT 'user'
     )`);
 
         await pool.query(`

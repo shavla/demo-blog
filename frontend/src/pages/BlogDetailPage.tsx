@@ -8,6 +8,8 @@ import CommentField from "../components/comments/CommentField";
 import type { DropdownButton } from "../models/types/dropdown.button.type";
 import DropDown from "../components/dropdown/Dropdown";
 import type { BlogInfoType } from "../models/types/blog.type";
+import { getAvatar } from "../utils/avatar";
+import type { CommentType } from "../models/types/comment.type";
 
 const BlogDetailPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -26,11 +28,13 @@ const BlogDetailPage = () => {
         enabled: Boolean(token && id),
     });
 
-    const { data: comments } = useQuery({
+    const { data: comments } = useQuery<CommentType[]>({
         queryKey: ["comments", blog?.blog_id],
         queryFn: () => getComments(blog!.blog_id, token!),
         enabled: Boolean(blog?.blog_id && token),
     });
+
+    console.log(comments)
 
     useEffect(() => {
         window.scrollTo({
@@ -157,7 +161,7 @@ const BlogDetailPage = () => {
             <div className="container mx-auto p-8 max-w-4xl">
                 <h1 className="text-4xl font-bold mb-4">{blog.title}</h1>
                 <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 bg-slate-500 rounded-full" />
+                    <img src={getAvatar(blog?.avatar)} alt="avatar" className="w-10 h-10 rounded-full" />
                     <div>
                         <Link to={`/personInfo/${blog.user_id}`} className="font-semibold hover:underline">
                             {blog.username}
@@ -195,7 +199,7 @@ const BlogDetailPage = () => {
                         <div key={c.comment_id} className="px-3 pt-3">
                             <div className="logo flex justify-between w-full">
                                 <div className="flex items-center">
-                                    <div className="logo-img w-8 h-8 bg-slate-500 rounded-full"></div>
+                                    <img src={getAvatar(c?.avatar)} alt="avatar" className=" w-8 h-8 rounded-full" />
                                     <div className="info ml-2">
                                         <Link className="font-semibold" to={`/personInfo/${c.user_id}`}>{c.username}</Link>
                                         <p className="text-xs text-gray-400">{formatDateShort(c.update_date)}</p>

@@ -26,7 +26,8 @@ export const getComments = async (id) => {
             comments.comment_id,
             comments.update_date,
             comments.user_id,
-            users.username
+            users.username,
+            users.avatar
         FROM comments
         JOIN users ON comments.user_id = users.id
         WHERE comments.blog_id = $1

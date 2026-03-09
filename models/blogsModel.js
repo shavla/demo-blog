@@ -77,7 +77,8 @@ export const getBlog = async (id) => {
             blogs.title,
             blogs.text,
             users.username,
-            users.email
+            users.email,
+            users.avatar
         FROM blogs
         JOIN users ON blogs.user_id = users.id
         WHERE blogs.blog_id = $1

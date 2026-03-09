@@ -1,14 +1,14 @@
 import { pool } from "../db/db.js";
 
-export const createUser = async (username, email, hashedPassword) => {
+export const createUser = async (username, email, hashedPassword, avatar) => {
   try {
     const query = `
-      INSERT INTO users (username, email, password)
-      VALUES ($1, $2, $3)
-      RETURNING id, username, email, role, created_at
+      INSERT INTO users (username, email, password, avatar)
+      VALUES ($1, $2, $3, $4)
+      RETURNING id, username, email, role, created_at, avatar
     `;
 
-    const result = await pool.query(query, [username, email, hashedPassword]);
+    const result = await pool.query(query, [username, email, hashedPassword, avatar]);
     return result.rows[0];
   } catch (error) {
     console.error('Error creating user:', error);

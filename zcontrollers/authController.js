@@ -5,6 +5,31 @@ import { blacklistedTokens, io, userSockets, userTokens } from "../index.js";
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-key'; // Use env variable in production
 
+const AVATARS = [
+    "bear",
+    "boy1",
+    "boy2",
+    "boy",
+    "cat",
+    "dog",
+    "gamer",
+    "giraffe",
+    "gorilla",
+    "lion",
+    "man2",
+    "man",
+    "panda",
+    "penguin",
+    "rabbit",
+    "user",
+    "users",
+    "woman1",
+    "woman2",
+    "woman"
+]
+
+const getRandomAvatar = () => AVATARS[Math.floor(Math.random() * AVATARS.length)];
+
 // Generate JWT token
 const generateToken = (userId, email, role) => {
     return jwt.sign(
@@ -37,7 +62,8 @@ export const registerUser = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = await createUser(userName, email, hashedPassword);
+        const avatar = getRandomAvatar();
+        const newUser = await createUser(userName, email, hashedPassword, avatar);
 
         const token = generateToken(newUser.id, newUser.email, newUser.role);
         res.status(200).json({
@@ -69,8 +95,8 @@ export const loginUser = async (req, res) => {
 
         const token = generateToken(user.id, user.email, user.role);
         const { password: _, ...safeUser } = user;
-        
-        userTokens.set(String(user.id), token); 
+
+        userTokens.set(String(user.id), token);
 
         res.status(200).json({
             message: 'Login successful',
