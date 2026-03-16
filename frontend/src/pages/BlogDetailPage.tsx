@@ -161,7 +161,9 @@ const BlogDetailPage = () => {
             <div className="container mx-auto p-8 max-w-4xl">
                 <h1 className="text-4xl font-bold mb-4">{blog.title}</h1>
                 <div className="flex items-center gap-3 mb-6">
-                    <img src={getAvatar(blog?.avatar)} alt="avatar" className="w-10 h-10 rounded-full" />
+                    <Link to={`/personInfo/${blog.user_id}`}>
+                        <img src={getAvatar(blog?.avatar)} alt="avatar" className="w-10 h-10 rounded-full" />
+                    </Link>
                     <div>
                         <Link to={`/personInfo/${blog.user_id}`} className="font-semibold hover:underline">
                             {blog.username}
@@ -199,9 +201,11 @@ const BlogDetailPage = () => {
                         <div key={c.comment_id} className="px-3 pt-3">
                             <div className="logo flex justify-between w-full">
                                 <div className="flex items-center">
-                                    <img src={getAvatar(c?.avatar)} alt="avatar" className=" w-8 h-8 rounded-full" />
+                                    <Link to={`/personInfo/${c.user_id}`}>
+                                        <img src={getAvatar(c?.avatar)} alt="avatar" className=" w-8 h-8 rounded-full" />
+                                    </Link>
                                     <div className="info ml-2">
-                                        <Link className="font-semibold" to={`/personInfo/${c.user_id}`}>{c.username}</Link>
+                                        <Link className="font-semibold hover:underline" to={`/personInfo/${c.user_id}`}>{c.username}</Link>
                                         <p className="text-xs text-gray-400">{formatDateShort(c.update_date)}</p>
                                     </div>
                                 </div>
