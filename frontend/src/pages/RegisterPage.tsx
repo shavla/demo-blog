@@ -34,20 +34,18 @@ const RegisterPage = () => {
                 body: JSON.stringify(userInfo)
             });
 
+
             if (response.ok) {
                 const data = await response.json();
                 console.log('Registration successful:', data);
 
-                // localStorage.setItem('token', data.token);
                 setUserInfo({ userName: "", email: "", password: "" });
                 login(data.newUser, data.token);
-                navigate("/")
+                navigate("/");
             } else {
                 const errorData = await response.json();
-                console.log('Registration failed:', errorData.message); // Will log "Email already exists"
-                // TODO create popup
-
-                // console.error('Registration failed:', response);
+                console.log('Registration failed:', errorData.message);
+                alert(errorData.message);
             }
         } catch (error) {
             console.error('Error during registration:', error);

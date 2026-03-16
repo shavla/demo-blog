@@ -25,7 +25,7 @@ export const io = new Server(httpServer, {
   cors: {
     origin: [
       'http://localhost:5173',
-      'http://10.210.189.24:5173'
+      'http://10.92.23.24:5173'
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE']
   }

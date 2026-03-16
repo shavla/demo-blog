@@ -34,20 +34,18 @@ const LoginPage = () => {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log('Registration successful:', data);
+                console.log('log in successful:', data);
 
                 setUserInfo({ email: "", password: "" });
                 login(data.user, data.token);
-                // localStorage.setItem('token', data.token);
                 navigate("/");
             } else {
                 const errorData = await response.json();
-                console.log('login failed:', errorData.message); // Will log "not good email"
-                // TODO create popup
-
+                console.log('login failed:', errorData.message);
+                alert(errorData.message);
             }
         } catch (error) {
-            console.error('Error during registration:', error);
+            console.error('Error during login:', error);
         }
     }
 
@@ -71,7 +69,7 @@ const LoginPage = () => {
                         </g>
                     </svg>
                     <input
-                        // type="email"
+                        type="email"
                         placeholder="mail@site.com"
                         required
                         name="email"
@@ -96,8 +94,8 @@ const LoginPage = () => {
                         </g>
                     </svg>
                     <input
-                        // type="password"
-                        // minLength={8}
+                        type="password"
+                        minLength={8}
                         required
                         placeholder="Password"
                         name="password" value={userInfo.password} onChange={handleInputChange}
